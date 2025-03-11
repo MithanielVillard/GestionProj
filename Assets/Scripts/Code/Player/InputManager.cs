@@ -5,7 +5,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerMovement))]
 public class InputManager : MonoBehaviour
 {
-    public static Interactable CurrentHover = null;
+    private Interactable _currentHover;
+    private RaycastHit _hit;
     
     private Camera _camera;
     private PlayerMovement _playerMovement;
@@ -17,16 +18,31 @@ public class InputManager : MonoBehaviour
         _playerMovement = GetComponent<PlayerMovement>();
     }
 
+    private void Update()
+    {
+        Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out _hit))
+        {
+            if (_hit.transform.TryGetComponent(out Interactable interactable))
+            {
+                _currentHover = interactable;
+                interactable.OnHover();
+                return;
+            }
+
+            if (_currentHover)
+            {
+                _currentHover.OnLeaverHover();
+                _currentHover = null;
+            }
+        }
+    }
+
     public void OnMouseClick(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
+        if (_currentHover == null)
         {
-            if (CurrentHover == null)
-            {
-                Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hit))
-                    _playerMovement.Move(hit.point);
-            }
+            _playerMovement.Move(_hit.point);
         }
     }
 }
