@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public enum ToolCategory
@@ -14,4 +15,7 @@ public class Tool : ScriptableObject
     public string toolDescription;
     public ToolCategory toolCategory;
     public Sprite toolSprite;
+
+    [Header("Inventory settings")]
+    public bool3x3 inventoryGrid;
 }
