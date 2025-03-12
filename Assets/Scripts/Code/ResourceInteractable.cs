@@ -1,17 +1,15 @@
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
 
 public class ResourceInteractable : Interactable
 {
+
     [Header("Properties")]
     [SerializeField] private Tool requiredTool;
+    [Tooltip("Listes des resources recus lors de l'intereraction")]
     [SerializeField] private Resource[] resultResources;
 
-    public override void OnInteract()
+    public override void OnInteract(PlayerMovement player)
     {
-        Debug.Log("Arbre coupé !");
-        Destroy(gameObject);
+        player.Move(transform.position);
     }
-
 }

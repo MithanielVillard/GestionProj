@@ -7,7 +7,6 @@ TagManager:
   - Floor
   - Interactable
   - InteractionName
-  - ProgressBar
   layers:
   - Default
   - TransparentFX
