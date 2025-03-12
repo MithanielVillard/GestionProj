@@ -1060,6 +1060,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionName: Chop Tree
+  requiredTool: {fileID: 11400000, guid: 4e7660e324ec0934fba93aeaca25fb60, type: 2}
+  resultResources: []
+  interactionDuration: 3
+  progressBar: {fileID: 0}
+  CurrentTool: {fileID: 11400000, guid: 4e7660e324ec0934fba93aeaca25fb60, type: 2}
 --- !u!1001 &2800436926259257793
 PrefabInstance:
   m_ObjectHideFlags: 0

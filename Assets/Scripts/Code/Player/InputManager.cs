@@ -42,7 +42,7 @@ public class InputManager : MonoBehaviour
     public void OnMouseClick(InputAction.CallbackContext ctx)
     {
         if (_currentHover == null) _playerMovement.Move(_hit.point);
-        else _currentHover.OnInteract(_playerMovement);
+        else _currentHover.OnInteractStart(_playerMovement);
         
     }
 }
