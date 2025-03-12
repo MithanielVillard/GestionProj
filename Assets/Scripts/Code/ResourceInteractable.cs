@@ -8,8 +8,8 @@ public class ResourceInteractable : Interactable
     [Tooltip("Listes des resources recus lors de l'intereraction")]
     [SerializeField] private Resource[] resultResources;
 
-    public override void OnInteract()
+    public override void OnInteract(PlayerMovement player)
     {
-        
+        player.Move(transform.position);
     }
 }

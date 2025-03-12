@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -40,9 +41,8 @@ public class InputManager : MonoBehaviour
 
     public void OnMouseClick(InputAction.CallbackContext ctx)
     {
-        if (_currentHover == null)
-        {
-            _playerMovement.Move(_hit.point);
-        }
+        if (_currentHover == null) _playerMovement.Move(_hit.point);
+        else _currentHover.OnInteract(_playerMovement);
+        
     }
 }

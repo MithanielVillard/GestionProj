@@ -1060,6 +1060,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionName: Chop Tree
+  requiredTool: {fileID: 0}
+  resultResources:
+  - {fileID: 11400000, guid: 64749ac126b936647aa41f7652d60ae4, type: 2}
+  - {fileID: 11400000, guid: 64749ac126b936647aa41f7652d60ae4, type: 2}
 --- !u!1001 &2800436926259257793
 PrefabInstance:
   m_ObjectHideFlags: 0

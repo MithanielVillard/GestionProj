@@ -25,5 +25,5 @@ public abstract class Interactable : MonoBehaviour
         _interactionName.text = "";
     }
     
-    public abstract void OnInteract();
+    public abstract void OnInteract(PlayerMovement player);
 }
