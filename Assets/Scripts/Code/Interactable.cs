@@ -24,12 +24,12 @@ public abstract class Interactable : MonoBehaviour
     {
         _interactionName = GameObject.FindWithTag("InteractionName").GetComponent<TextMeshProUGUI>();
         _ProgressBar = GameObject.FindWithTag("ProgressBar").GetComponent<Image>();
-
     }
 
     public void OnHover()
     {
         _interactionName.rectTransform.position = Input.mousePosition + new Vector3(0.0f, 10.0f, 0.0f);
+        _ProgressBar.rectTransform.position = Input.mousePosition;
         _interactionName.text = interactionName;
     }
 
@@ -40,15 +40,18 @@ public abstract class Interactable : MonoBehaviour
 
     public void OnInteractStart(PlayerMovement player)
     {
-        player.Move(transform.position);
-
-        if (CurrentTool != null && CurrentTool.toolCategory == ToolCategory.Axe)
+        player.Move(transform.position, () =>
         {
-            StartCoroutine(StartCutting());
-        }
+            if (CurrentTool != null && CurrentTool.toolCategory == ToolCategory.Axe)
+            {
+                print("called");
+                StartCoroutine(BeginInteractDelay());
+            }
+        });
+
     }
 
-    private IEnumerator StartCutting()
+    private IEnumerator BeginInteractDelay()
     {
         isInteracting = true;
         holdTime = 0f;

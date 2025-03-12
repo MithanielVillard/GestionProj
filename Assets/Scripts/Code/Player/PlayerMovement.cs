@@ -12,10 +12,11 @@ public class PlayerMovement : MonoBehaviour
     
     //-------
     private NavMeshAgent _agent;
+    
     private bool _isMoving = false;
+    private Action _onDestinationReached;
     //-------
 
-    public UnityEvent _onDestinationReached;
 
     private void Start()
     {
@@ -35,11 +36,11 @@ public class PlayerMovement : MonoBehaviour
         _isMoving = true;
     }
 
-    public void Move(Vector3 destination, UnityAction onDestinationReached)
+    public void Move(Vector3 destination, Action onDestinationReached)
     {
         Move(destination);
-        _onDestinationReached.AddListener(onDestinationReached);
-        print(onDestinationReached.GetInvocationList()[0]);
+        if (_onDestinationReached != null) return;
+        _onDestinationReached = onDestinationReached;
     }
 
     private void CheckDestination()
@@ -50,7 +51,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (!_agent.hasPath || _agent.velocity.sqrMagnitude == 0f)
                 {
-                    _onDestinationReached.Invoke();
+                    _onDestinationReached();
+                    _onDestinationReached = null;
                     _isMoving = false;
                 }
             }
