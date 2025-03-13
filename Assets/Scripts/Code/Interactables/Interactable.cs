@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Runtime.InteropServices;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,14 +11,10 @@ public abstract class Interactable : MonoBehaviour
     [Header("Properties")]
     [SerializeField] private string interactionName;
     [SerializeField] private float interactionDuration = 3f;
-
-    [SerializeField] private Tool CurrentTool;
-
-
+    
     private TextMeshProUGUI _interactionName;
     private Image _ProgressBar;
-
-
+    
     private bool isInteracting = false;
     private float holdTime = 0f;
 
@@ -25,11 +23,10 @@ public abstract class Interactable : MonoBehaviour
         _interactionName = GameObject.FindWithTag("InteractionName").GetComponent<TextMeshProUGUI>();
         _ProgressBar = GameObject.FindWithTag("ProgressBar").GetComponent<Image>();
     }
-
-    public void OnHover()
+    
+    public void OnHover(GameObject player)
     {
         _interactionName.rectTransform.position = Input.mousePosition + new Vector3(0.0f, 10.0f, 0.0f);
-        _ProgressBar.rectTransform.position = Input.mousePosition;
         _interactionName.text = interactionName;
     }
 
@@ -38,20 +35,12 @@ public abstract class Interactable : MonoBehaviour
         _interactionName.text = "";
     }
 
-    public void OnInteractStart(PlayerMovement player)
+    public virtual void OnInteractStart(GameObject player)
     {
-        player.Move(transform.position, () =>
-        {
-            if (CurrentTool != null && CurrentTool.toolCategory == ToolCategory.Axe)
-            {
-                print("called");
-                StartCoroutine(BeginInteractDelay());
-            }
-        });
-
+        StartCoroutine(BeginInteractDelay(player));
     }
 
-    private IEnumerator BeginInteractDelay()
+    private IEnumerator BeginInteractDelay(GameObject player)
     {
         isInteracting = true;
         holdTime = 0f;
@@ -71,7 +60,8 @@ public abstract class Interactable : MonoBehaviour
             yield return null;
         }
 
-        OnInteract();
+        OnInteract(player);
+        _interactionName.text = "";
         CancelInteraction();
     }
 
@@ -81,5 +71,5 @@ public abstract class Interactable : MonoBehaviour
         isInteracting = false;
     }
 
-    public abstract void OnInteract();
+    public abstract void OnInteract(GameObject player);
 }

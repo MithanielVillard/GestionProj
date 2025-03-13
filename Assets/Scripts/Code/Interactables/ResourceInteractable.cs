@@ -8,9 +8,22 @@ public class ResourceInteractable : Interactable
     [SerializeField] private Tool requiredTool;
     [SerializeField] private Resource[] resultResources;
 
-    public override void OnInteract()
+    public override void OnInteractStart(GameObject player)
     {
-        Debug.Log("Arbre coupé !");
+        PlayerInventory playerInventory = player.GetComponent<PlayerInventory>();
+        if (playerInventory.EquippedTool != null && playerInventory.EquippedTool.toolCategory == requiredTool.toolCategory)
+        {
+            player.GetComponent<PlayerMovement>().Move(transform.position, () =>
+            {
+                base.OnInteractStart(player);
+            });
+        }
+    }
+
+    public override void OnInteract(GameObject player)
+    {
+        Debug.Log("Arbre coupï¿½ !");
+        player.GetComponent<PlayerInventory>().AddItem(resultResources[0], 1);
         Destroy(gameObject);
     }
 
