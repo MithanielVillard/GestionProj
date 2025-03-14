@@ -33,35 +33,55 @@ public abstract class Interactable : MonoBehaviour
         _interactionName.text = "";
     }
 
-    public virtual void OnInteractStart(GameObject player)
+    public void OnInteractStart(PlayerMovement player)
+{
+    player.Move(transform.position, () =>
     {
-        StartCoroutine(BeginInteractDelay(player));
-    }
-
-    private IEnumerator BeginInteractDelay(GameObject player)
-    {
-        isInteracting = true;
-        holdTime = 0f;
-        _ProgressBar.gameObject.SetActive(true);
-
-        while (holdTime < interactionDuration)
+        if (CurrentTool != null)
         {
-            if (!isInteracting)
+            if (CurrentTool.toolCategory == ToolCategory.Axe)
             {
-                _ProgressBar.fillAmount = 0;
-                _ProgressBar.gameObject.SetActive(false);
-                yield break;
+                print("Abattage de l'arbre...");
+                StartCoroutine(BeginInteractDelay(3f, OnInteract));
             }
-            _ProgressBar.rectTransform.position = Input.mousePosition;
-            holdTime += Time.deltaTime;
-            _ProgressBar.fillAmount = holdTime / interactionDuration;
-            yield return null;
+            else if (CurrentTool.toolCategory == ToolCategory.Notebook)
+            {
+                print("Prise de note...");
+                StartCoroutine(BeginInteractDelay(10f, OnNoteTaken)); 
+            }
         }
+    });
+}
 
-        OnInteract(player);
-        _interactionName.text = "";
-        CancelInteraction();
+private IEnumerator BeginInteractDelay(float duration, Action onComplete)
+{
+    isInteracting = true;
+    holdTime = 0f;
+    _ProgressBar.gameObject.SetActive(true);
+
+    while (holdTime < duration)
+    {
+        if (!isInteracting)
+        {
+            _ProgressBar.fillAmount = 0;
+            _ProgressBar.gameObject.SetActive(false);
+            yield break;
+        }
+        _ProgressBar.rectTransform.position = Input.mousePosition;
+        holdTime += Time.deltaTime;
+        _ProgressBar.fillAmount = holdTime / duration;
+        yield return null;
     }
+
+    onComplete();
+    CancelInteraction();
+}
+
+protected virtual void OnNoteTaken()
+{
+    Debug.Log("Note prise !");
+}
+
 
     public void CancelInteraction()
     {
