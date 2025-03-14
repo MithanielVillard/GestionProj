@@ -27,7 +27,7 @@ public class InputManager : MonoBehaviour
             if (_hit.transform.TryGetComponent(out Interactable interactable))
             {
                 _currentHover = interactable;
-                interactable.OnHover();
+                interactable.OnHover(_playerMovement.gameObject);
                 return;
             }
 
@@ -45,7 +45,7 @@ public class InputManager : MonoBehaviour
         {
             _playerMovement.Move(_hit.point, () => {print("Je suis arrive");});
         }
-        else _currentHover.OnInteractStart(_playerMovement);
+        else _currentHover.OnInteractStart(_playerMovement.gameObject);
         
     }
 }

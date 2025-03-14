@@ -9,7 +9,7 @@ public class ResourceInteractable : Interactable
     [SerializeField] private Resource[] resultResources;
     [SerializeField] private string treeType; 
 
-    public override void OnInteract()
+    public override void OnInteractStart(GameObject player)
     {
         Debug.Log("Arbre coupé !");
         Destroy(gameObject);

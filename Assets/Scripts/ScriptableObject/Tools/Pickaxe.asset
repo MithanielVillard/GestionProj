@@ -9,14 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61cca4f9a107a2d4c84137c4dd6b0906, type: 3}
-  m_Name: Wood
+  m_Script: {fileID: 11500000, guid: 7a01e02a1a1d2fe40be6599d4b002b44, type: 3}
+  m_Name: Pickaxe
   m_EditorClassIdentifier: 
-  resourceName: Bois
-  resourceDescription: 
-  resourceSprite: {fileID: 21300000, guid: 421cf0fa88bd0954c905a1b3b9a96d6f, type: 3}
-  resourceRarity: 0
-  stackSize: 64
+  toolName: Pickaxe
+  toolDescription: 
+  toolCategory: 1
+  toolSprite: {fileID: 0}
   inventoryGrid:
     c0:
       x: 0
@@ -24,7 +23,7 @@ MonoBehaviour:
       z: 0
     c1:
       x: 0
-      y: 1
+      y: 0
       z: 0
     c2:
       x: 0
