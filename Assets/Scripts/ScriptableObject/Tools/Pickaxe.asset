@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a01e02a1a1d2fe40be6599d4b002b44, type: 3}
-  m_Name: Test
+  m_Name: Pickaxe
   m_EditorClassIdentifier: 
-  toolName: 
+  toolName: Pickaxe
   toolDescription: 
-  toolCategory: 0
+  toolCategory: 1
   toolSprite: {fileID: 0}
   inventoryGrid:
     c0:

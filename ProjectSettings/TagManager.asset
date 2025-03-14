@@ -7,6 +7,8 @@ TagManager:
   - Floor
   - Interactable
   - InteractionName
+  - ProgressBar
+  - InventoryLayoutGroup
   layers:
   - Default
   - TransparentFX

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61cca4f9a107a2d4c84137c4dd6b0906, type: 3}
-  m_Name: Wood
+  m_Name: Stone
   m_EditorClassIdentifier: 
-  resourceName: Bois
+  resourceName: Stone
   resourceDescription: 
-  resourceSprite: {fileID: 21300000, guid: 421cf0fa88bd0954c905a1b3b9a96d6f, type: 3}
+  resourceSprite: {fileID: 21300000, guid: c263cc27bbe93ea409237c534e852b61, type: 3}
   resourceRarity: 0
   stackSize: 64
   inventoryGrid:
@@ -24,7 +24,7 @@ MonoBehaviour:
       z: 0
     c1:
       x: 0
-      y: 1
+      y: 0
       z: 0
     c2:
       x: 0
