@@ -5,7 +5,8 @@ public enum ToolCategory
 {
     Axe,
     Pickaxe,
-    Other,
+    Notebook,
+    Other
 }
 
 [CreateAssetMenu(menuName = "ScriptableObject/Tool")]
