@@ -5,6 +5,7 @@ public class PlayerInventory : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private InventorySlot inventorySlotPrefab;
+    [SerializeField] private ItemStack itemStackPrefab;
     
     [Header("Inventory Properties")]
     [SerializeField] private uint width = 3;
@@ -14,13 +15,13 @@ public class PlayerInventory : MonoBehaviour
     public Tool EquippedTool { get; set; }
     
     //--------------------
-    private GridLayoutGroup gridLayoutGroup;
-    private InventorySlot[,] gridInventory;
+    private GridLayoutGroup _gridLayoutGroup;
+    private InventorySlot[,] _gridInventory;
 
     private void Start()
     {
-        gridLayoutGroup = GameObject.FindWithTag("InventoryLayoutGroup").GetComponent<GridLayoutGroup>();
-        gridInventory = new InventorySlot[width, height];
+        _gridLayoutGroup = GameObject.FindWithTag("InventoryLayoutGroup").GetComponent<GridLayoutGroup>();
+        _gridInventory = new InventorySlot[width, height];
         
         GenerateGrid();
     }
@@ -31,16 +32,44 @@ public class PlayerInventory : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
-                gridInventory[i, j] = Instantiate(inventorySlotPrefab, gridLayoutGroup.transform);
+                _gridInventory[i, j] = Instantiate(inventorySlotPrefab, _gridLayoutGroup.transform);
             }
         }
     }
-    
-    // Pour l'instant on ne peux stocker que des resources TODO a modifier pour ajouter les outils
-    public bool AddItem(Resource stack, uint x, uint y)
+
+    public void SetItem(Resource resource, uint amount, uint x, uint y)
     {
-        if (gridInventory[x, y] == null) return false;
-        return gridInventory[x, y].AddResource(stack);
+        ItemStack stack = Instantiate(itemStackPrefab);
+        stack.Resource = resource;
+        stack.Amount = amount;
+        _gridInventory[x, y].SetStack(stack);
+    }
+    
+    public void AddItem(Resource r, uint amount)
+    {
+        InventorySlot emptySlot = null;
+        
+        for (int x = 0; x < height; x++)
+        {
+            for (int y = 0; y < width; y++)
+            {
+                if (_gridInventory[x, y].ItemStack != null && _gridInventory[x, y].ItemStack.Resource == r)
+                {
+                    _gridInventory[x, y].ItemStack.Amount++;
+                    return;
+                }
+                
+                if (_gridInventory[x, y].IsOccupied == false) emptySlot = _gridInventory[x, y];
+            }
+        }
+
+        if (emptySlot != null)
+        {
+            ItemStack stack = Instantiate(itemStackPrefab);
+            stack.Resource = r;
+            stack.Amount = amount;
+            emptySlot.SetStack(stack);
+        }
     }
 }
 
