@@ -1,22 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InventorySlot : MonoBehaviour
 {
-    public bool IsOccupied {get; set;} //equivalent getter / setter en c++
-    public uint Quantity { get; private set; }
-    public uint StackSize { get; private set; }
-    public Resource Resource {get; private set;}
 
-    public bool AddResource(Resource resource, uint count = 1)
+    [Header("References")]
+    [SerializeField] private GameObject itemStackPrefab;
+    
+    //-----------------------
+    
+    public bool IsOccupied {get; set;} //equivalent getter / setter en c++
+    public uint StackSize { get; private set; }
+    public ItemStack ItemStack {get; private set;}
+    
+    //-----------------------
+    
+    public void SetStack(ItemStack stack)
     {
-        if (this.Resource != null) return false;
-        if (this.Quantity + count > StackSize) return false;
-        
-        this.Resource = resource;
-        StackSize = resource.stackSize;
-        Quantity = count;
-        return true;
+        this.ItemStack = stack;
+        stack.transform.SetParent(this.transform, false);
+        stack.transform.localPosition = Vector3.zero;
+        StackSize = stack.Resource.stackSize;
+        IsOccupied = true;
     }
 }
