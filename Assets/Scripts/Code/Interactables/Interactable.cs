@@ -11,7 +11,8 @@ public abstract class Interactable : MonoBehaviour
     [Header("Properties")]
     [SerializeField] private string interactionName;
     [SerializeField] private float interactionDuration = 3f;
-    
+    [SerializeField] private Tool requiredTool;
+
     private TextMeshProUGUI _interactionName;
     private Image _ProgressBar;
     
@@ -35,27 +36,28 @@ public abstract class Interactable : MonoBehaviour
         _interactionName.text = "";
     }
 
-    public void OnInteractStart(PlayerMovement player)
+public virtual void OnInteractStart(GameObject player)
 {
-    player.Move(transform.position, () =>
+    PlayerInventory inventory = player.GetComponent<PlayerInventory>();
+    player.GetComponent<PlayerMovement>().Move(transform.position, () =>
     {
-        if (CurrentTool != null)
+        if (inventory.EquippedTool != null)
         {
-            if (CurrentTool.toolCategory == ToolCategory.Axe)
+            if (inventory.EquippedTool.toolCategory == requiredTool.toolCategory)
             {
                 print("Abattage de l'arbre...");
-                StartCoroutine(BeginInteractDelay(3f, OnInteract));
+                StartCoroutine(BeginInteractDelay(player, interactionDuration, OnInteract)); 
             }
-            else if (CurrentTool.toolCategory == ToolCategory.Notebook)
+            else if (inventory.EquippedTool.toolCategory == ToolCategory.Notebook)
             {
                 print("Prise de note...");
-                StartCoroutine(BeginInteractDelay(10f, OnNoteTaken)); 
+                StartCoroutine(BeginInteractDelay(player,10f, OnNoteTaken)); 
             }
         }
     });
 }
 
-private IEnumerator BeginInteractDelay(float duration, Action onComplete)
+private IEnumerator BeginInteractDelay(GameObject player, float duration, Action<GameObject> onComplete)
 {
     isInteracting = true;
     holdTime = 0f;
@@ -73,16 +75,13 @@ private IEnumerator BeginInteractDelay(float duration, Action onComplete)
         holdTime += Time.deltaTime;
         _ProgressBar.fillAmount = holdTime / duration;
         yield return null;
-        OnInteract(player);
-        _interactionName.text = "";
-        CancelInteraction();
     }
 
-    onComplete();
+    onComplete(player);
     CancelInteraction();
 }
 
-protected virtual void OnNoteTaken()
+protected virtual void OnNoteTaken(GameObject player)
 {
     Debug.Log("Note prise !");
 }

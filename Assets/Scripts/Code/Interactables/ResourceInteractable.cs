@@ -5,21 +5,8 @@ using System.Collections;
 public class ResourceInteractable : Interactable
 {
     [Header("Properties")]
-    [SerializeField] private Tool requiredTool;
     [SerializeField] private Resource[] resultResources;
     [SerializeField] private string treeType; 
-
-    public override void OnInteractStart(GameObject player)
-    {
-        PlayerInventory playerInventory = player.GetComponent<PlayerInventory>();
-        if (playerInventory.EquippedTool != null && playerInventory.EquippedTool.toolCategory == requiredTool.toolCategory)
-        {
-            player.GetComponent<PlayerMovement>().Move(transform.position, () =>
-            {
-                base.OnInteractStart(player);
-            });
-        }
-    }
 
     public override void OnInteract(GameObject player)
     {
@@ -28,7 +15,7 @@ public class ResourceInteractable : Interactable
         Destroy(gameObject);
     }
 
-    protected override void OnNoteTaken()
+    protected override void OnNoteTaken(GameObject player)
     {
         Debug.Log($"Note ajoutée : {treeType}");
         UIManager.Instance.ShowNotebookPage(treeType);
